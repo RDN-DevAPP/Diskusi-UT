@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form Identitas Diri – Soal No. 1 (Lengkap)</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#101a35;
+      --panel-2:#0f1630;
+      --text:#e7ecff;
+      --muted:#9db0ff;
+      --accent:#5b86ff;
+      --accent-2:#7fd1ff;
+      --danger:#ff6b6b;
+      --ok:#33d69f;
+      --border:rgba(255,255,255,0.12);
+      --focus:0 0 0 3px rgba(127,209,255,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, #1a2550 0%, transparent 50%),
+        radial-gradient(800px 500px at -10% 120%, #15214a 0%, transparent 60%),
+        var(--bg);
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+    .container{
+      flex:1 0 auto;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 16px 40px;
+    }
+    header{
+      display:flex; gap:18px; align-items:center; margin-bottom:14px;
+    }
+    .brand{
+      width:44px;height:44px;border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 8px 24px rgba(91,134,255,.35), inset 0 0 40px rgba(255,255,255,.15);
+    }
+    h1{font-size:clamp(20px, 2.6vw, 28px); margin:0;}
+    .subtitle{color:var(--muted); margin-top:2px; font-size:14px}
+
+    .card{
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb{
+      display:flex; flex-wrap:wrap; gap:6px; padding:14px 16px; border-bottom:1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      font-size:13px; color: var(--muted);
+    }
+    .breadcrumb a{color:var(--muted); text-decoration:none}
+    .breadcrumb .sep{opacity:.5}
+    .breadcrumb .here{color:var(--text); font-weight:600}
+
+    /* Stepper */
+    .stepper{
+      display:grid; grid-template-columns: repeat(4,1fr);
+      gap:6px; padding:16px; border-bottom:1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+    .step{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      user-select:none; cursor:pointer;
+    }
+    .step .dot{
+      width:28px;height:28px;border-radius:50%;
+      display:inline-grid; place-items:center;
+      background: rgba(255,255,255,0.06);
+      border:1px solid var(--border);
+      font-weight:700; font-size:13px; color:var(--muted);
+    }
+    .step .label{font-size:13px; color:var(--muted)}
+    .step.active{border-color: rgba(127,209,255,.6); background: linear-gradient(180deg, rgba(127,209,255,.10), rgba(127,209,255,.03))}
+    .step.active .dot{background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#051028; border-color: transparent; box-shadow: 0 0 0 3px rgba(127,209,255,.25)}
+    .step.done .dot{background: linear-gradient(135deg, #33d69f, #7fffbe); color:#05251c; border-color: transparent}
+    .step.done .label{color:#aef3d7}
+
+    /* Progress bar */
+    .progress{
+      height:8px; background:rgba(255,255,255,0.06);
+      margin:0 16px; border-radius:999px; overflow:hidden;
+    }
+    .progress > span{
+      display:block; height:100%; width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .35s ease;
+    }
+
+    /* Form body */
+    form{padding: 18px 16px 8px;}
+    .grid{
+      display:grid; gap:14px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .field{grid-column: span 12}
+    .field.half{grid-column: span 6}
+    .field.third{grid-column: span 4}
+    @media (max-width: 860px){
+      .stepper{grid-template-columns: 1fr 1fr}
+      .field.half, .field.third{grid-column: span 12}
+    }
+    label{display:block; font-weight:600; margin-bottom:6px; font-size:14px}
+    .hint{font-size:12px; color:var(--muted); margin-top:6px}
+    input[type="text"], input[type="email"], input[type="date"], input[type="number"], input[type="month"], select, textarea{
+      width:100%; padding:12px 12px; border-radius:12px; border:1px solid var(--border);
+      background: rgba(255,255,255,0.04); color:var(--text);
+      outline:none; transition: box-shadow .2s, border-color .2s;
+    }
+    textarea{min-height:110px; resize:vertical}
+    input:focus, select:focus, textarea:focus{box-shadow: var(--focus); border-color: transparent}
+
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .radio{display:flex; gap:8px; align-items:center}
+    .radio input{accent-color: #6ea8ff}
+
+    .photo{
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+    }
+    .photo .preview{
+      width:84px;height:84px;border-radius:12px; border:1px dashed var(--border);
+      display:grid;place-items:center; font-size:12px; color:var(--muted); overflow:hidden; background: rgba(255,255,255,0.02)
+    }
+    .photo .preview img{width:100%;height:100%;object-fit:cover}
+
+    .actions{
+      display:flex; justify-content:space-between; gap:10px; padding:16px; border-top:1px solid var(--border); margin-top:10px;
+      background: rgba(255,255,255,0.02);
+    }
+    .btn{
+      appearance:none; border:none; padding:12px 16px; border-radius:12px; font-weight:700; cursor:pointer;
+      background: rgba(255,255,255,0.06); color:var(--text); border:1px solid var(--border);
+    }
+    .btn:hover{filter:brightness(1.1)}
+    .btn.primary{background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#051028; border-color:transparent}
+    .btn.ghost{background: transparent}
+    .btn.danger{background: linear-gradient(135deg, #ff8f8f, #ff6b6b); color:#2b0c0c; border-color:transparent}
+    .btn:disabled{opacity:.5; cursor:not-allowed}
+
+    .error{color:var(--danger); font-size:12px; margin-top:6px; display:none}
+    .show{display:block}
+
+    /* Section visibility */
+    .section{display:none}
+    .section.active{display:block}
+
+    /* Modal */
+    dialog{
+      border:none; border-radius:18px; padding:0; background: linear-gradient(180deg, var(--panel), var(--panel-2)); color:var(--text);
+      width:min(680px, 94vw);
+    }
+    dialog::backdrop{background: rgba(8,12,24,.6)}
+    .modal-head{padding:16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center}
+    .modal-body{padding:16px}
+    .kv{display:grid; grid-template-columns: 180px 1fr; gap:8px; font-size:14px}
+    .kv div{padding:6px 0; border-bottom:1px dashed var(--border)}
+    .pill{display:inline-flex; align-items:center; gap:8px; font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,0.04)}
+
+    /* Footer */
+    .site-footer{
+      margin-top:24px;
+      padding:16px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid var(--border);
+      background:rgba(255,255,255,0.02);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand" aria-hidden="true"></div>
+      <div>
+        <h1>Formulir Identitas Diri</h1>
+        <div class="subtitle">Data Pribadi • Pendidikan • Pengalaman Organisasi • Pengalaman Kerja</div>
+      </div>
+    </header>
+
+    <div class="card" role="application" aria-label="Form Identitas Diri">
+      <!-- breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#" onclick="return false;">Home</a>
+        <span class="sep">›</span>
+        <a href="#" onclick="return false;">Formulir</a>
+        <span class="sep">›</span>
+        <span class="here" id="bcHere">Data Pribadi</span>
+      </nav>
+
+      <!-- stepper -->
+      <div class="stepper" id="stepper" aria-label="Langkah Formulir">
+        <div class="step active" data-step="0"><span class="dot">1</span><span class="label">Data Pribadi</span></div>
+        <div class="step" data-step="1"><span class="dot">2</span><span class="label">Pendidikan</span></div>
+        <div class="step" data-step="2"><span class="dot">3</span><span class="label">Organisasi</span></div>
+        <div class="step" data-step="3"><span class="dot">4</span><span class="label">Kerja</span></div>
+      </div>
+
+      <!-- progress -->
+      <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+
+      <!-- form -->
+      <form id="identitasForm" novalidate>
+        <!-- SECTION 1 -->
+        <section class="section active" data-section="0" aria-labelledby="sec1-title">
+          <h2 id="sec1-title" class="visually-hidden" style="position:absolute;left:-10000px;top:auto">Data Pribadi</h2>
+          <div class="grid">
+            <div class="field half">
+              <label for="nama">Nama Lengkap*</label>
+              <input id="nama" name="nama" type="text" autocomplete="name" required placeholder="cth. M. Riduan" />
+              <div class="error">Nama wajib diisi.</div>
+            </div>
+            <div class="field half">
+              <label for="nim">NIM*</label>
+              <input id="nim" name="nim" type="text" inputmode="numeric" required placeholder="cth. 053660074" />
+              <div class="error">NIM wajib diisi.</div>
+            </div>
+
+            <div class="field half">
+              <label for="ttl">Tanggal Lahir*</label>
+              <input id="ttl" name="ttl" type="date" required />
+              <div class="error">Tanggal lahir wajib diisi.</div>
+            </div>
+            <div class="field half">
+              <label>Jenis Kelamin*</label>
+              <div class="row" role="radiogroup" aria-label="Jenis Kelamin">
+                <label class="radio"><input type="radio" name="jk" value="Laki-laki" required /> Laki-laki</label>
+                <label class="radio"><input type="radio" name="jk" value="Perempuan" required /> Perempuan</label>
+              </div>
+              <div class="error">Pilih salah satu jenis kelamin.</div>
+            </div>
+
+            <div class="field">
+              <label for="alamat">Alamat*</label>
+              <textarea id="alamat" name="alamat" required placeholder="Nama jalan, RT/RW, Kel/Desa, Kec, Kota/Kab, Provinsi, Kode Pos"></textarea>
+              <div class="error">Alamat wajib diisi.</div>
+            </div>
+
+            <div class="field half">
+              <label for="hp">Nomor HP*</label>
+              <input id="hp" name="hp" type="text" inputmode="tel" required placeholder="08xxxxxxxxxx" />
+              <div class="error">Nomor HP wajib diisi.</div>
+            </div>
+            <div class="field half">
+              <label for="email">Email*</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="nama@domain.com" />
+              <div class="error">Email tidak valid.</div>
+            </div>
+
+            <div class="field">
+              <label>Foto Profil</label>
+              <div class="photo">
+                <div class="preview" id="preview">Pratinjau</div>
+                <input type="file" id="foto" name="foto" accept="image/*" />
+              </div>
+              <div class="hint">Opsional. JPG/PNG, sebaiknya rasio 1:1.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section class="section" data-section="1" aria-labelledby="sec2-title">
+          <h2 id="sec2-title" class="visually-hidden" style="position:absolute;left:-10000px;top:auto">Riwayat Pendidikan</h2>
+          <div class="grid">
+            <div class="field half">
+              <label for="jenjang">Pendidikan Terakhir*</label>
+              <select id="jenjang" name="jenjang" required>
+                <option value="">Pilih...</option>
+                <option>SMK/SMA</option>
+                <option>D3</option>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
+              </select>
+              <div class="error">Pendidikan terakhir wajib dipilih.</div>
+            </div>
+            <div class="field half">
+              <label for="institusi">Nama Sekolah/Universitas*</label>
+              <input id="institusi" name="institusi" type="text" required placeholder="cth. Universitas Terbuka" />
+              <div class="error">Nama institusi wajib diisi.</div>
+            </div>
+            <div class="field half">
+              <label for="jurusan">Jurusan/Program Studi*</label>
+              <input id="jurusan" name="jurusan" type="text" required placeholder="cth. Sistem Informasi" />
+              <div class="error">Jurusan wajib diisi.</div>
+            </div>
+            <div class="field third">
+              <label for="tahunMasuk">Tahun Masuk*</label>
+              <input id="tahunMasuk" name="tahunMasuk" type="number" min="1980" max="2099" required />
+              <div class="error">Tahun masuk tidak valid.</div>
+            </div>
+            <div class="field third">
+              <label for="tahunLulus">Tahun Lulus (atau rencana)</label>
+              <input id="tahunLulus" name="tahunLulus" type="number" min="1980" max="2099" />
+            </div>
+            <div class="field third">
+              <label for="ipk">Rata-rata/IPK</label>
+              <input id="ipk" name="ipk" type="text" placeholder="cth. 3.75" />
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 3 -->
+        <section class="section" data-section="2" aria-labelledby="sec3-title">
+          <h2 id="sec3-title" class="visually-hidden" style="position:absolute;left:-10000px;top:auto">Pengalaman Organisasi</h2>
+          <div class="grid">
+            <div class="field half">
+              <label for="orgNama">Nama Organisasi</label>
+              <input id="orgNama" name="orgNama" type="text" placeholder="cth. Saka Bakti Husada Batola" />
+            </div>
+            <div class="field half">
+              <label for="orgJabatan">Jabatan</label>
+              <input id="orgJabatan" name="orgJabatan" type="text" placeholder="cth. Ketua" />
+            </div>
+            <div class="field half">
+              <label for="orgMulai">Tahun Mulai</label>
+              <input id="orgMulai" name="orgMulai" type="number" min="1980" max="2099" />
+            </div>
+            <div class="field half">
+              <label for="orgSelesai">Tahun Selesai</label>
+              <input id="orgSelesai" name="orgSelesai" type="number" min="1980" max="2099" />
+            </div>
+            <div class="field">
+              <label for="orgDesc">Uraian Tugas & Capaian</label>
+              <textarea id="orgDesc" name="orgDesc" placeholder="Ringkas, berorientasi hasil (kontribusi, dampak, metrik)."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4 -->
+        <section class="section" data-section="3" aria-labelledby="sec4-title">
+          <h2 id="sec4-title" class="visually-hidden" style="position:absolute;left:-10000px;top:auto">Pengalaman Kerja</h2>
+          <div class="grid">
+            <div class="field half">
+              <label for="kerjaNama">Nama Instansi/Perusahaan</label>
+              <input id="kerjaNama" name="kerjaNama" type="text" placeholder="cth. PT Barito Putera Plantation" />
+            </div>
+            <div class="field half">
+              <label for="kerjaPosisi">Jabatan/Posisi</label>
+              <input id="kerjaPosisi" name="kerjaPosisi" type="text" placeholder="cth. Kerani Keuangan" />
+            </div>
+            <div class="field half">
+              <label for="kerjaMulai">Periode Mulai</label>
+              <input id="kerjaMulai" name="kerjaMulai" type="month" />
+            </div>
+            <div class="field half">
+              <label for="kerjaSelesai">Periode Selesai (atau kosong jika masih aktif)</label>
+              <input id="kerjaSelesai" name="kerjaSelesai" type="month" />
+            </div>
+            <div class="field">
+              <label for="kerjaDesc">Deskripsi Pekerjaan & Pencapaian</label>
+              <textarea id="kerjaDesc" name="kerjaDesc" placeholder="Fokus pada tanggung jawab inti dan hasil terukur (mis. efisiensi, automasi, penghematan)."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- actions -->
+        <div class="actions">
+          <div class="row">
+            <button type="button" class="btn ghost" id="btnDraft">Simpan Draf</button>
+            <button type="button" class="btn danger" id="btnReset">Reset</button>
+          </div>
+          <div class="row">
+            <button type="button" class="btn" id="btnPrev">Kembali</button>
+            <button type="button" class="btn primary" id="btnNext">Berikutnya</button>
+            <button type="submit" class="btn primary" id="btnSubmit" style="display:none">Kirim</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="site-footer">
+    © <span id="year"></span> Form Identitas Diri — Universitas Terbuka • Dibuat oleh M. Riduan
+  </footer>
+
+  <!-- modal ringkasan -->
+  <dialog id="modal">
+    <div class="modal-head">
+      <strong>Ringkasan Data</strong>
+      <button class="btn ghost" onclick="modal.close()">Tutup</button>
+    </div>
+    <div class="modal-body" id="summary"></div>
+  </dialog>
+
+  <script>
+    // ===== Helpers =====
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    const form = $('#identitasForm');
+    const sections = $$('.section');
+    const stepper = $('#stepper');
+    const steps = $$('.step', stepper);
+    const bcHere = $('#bcHere');
+    const bar = $('#bar');
+    const btnPrev = $('#btnPrev');
+    const btnNext = $('#btnNext');
+    const btnSubmit = $('#btnSubmit');
+    const btnDraft = $('#btnDraft');
+    const btnReset = $('#btnReset');
+    const modal = $('#modal');
+    const summary = $('#summary');
+    const foto = $('#foto');
+    const preview = $('#preview');
+    const yearEl = $('#year');
+
+    const TITLES = ['Data Pribadi','Pendidikan','Organisasi','Kerja'];
+    let current = 0;
+
+    // Tahun otomatis untuk footer
+    yearEl.textContent = new Date().getFullYear();
+
+    function setStep(idx){
+      current = Math.max(0, Math.min(idx, sections.length-1));
+      sections.forEach((s,i)=> s.classList.toggle('active', i===current));
+      steps.forEach((st,i)=>{
+        st.classList.toggle('active', i===current);
+        st.classList.toggle('done', i<current);
+      });
+      const pct = (current)/(sections.length-1) * 100;
+      bar.style.width = pct + '%';
+      bcHere.textContent = TITLES[current];
+      btnPrev.disabled = current === 0;
+      btnNext.style.display = current === sections.length-1 ? 'none' : 'inline-block';
+      btnSubmit.style.display = current === sections.length-1 ? 'inline-block' : 'none';
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function validateSection(secIndex){
+      const sec = sections[secIndex];
+      let valid = true;
+      // clear old errors
+      $$('.error', sec).forEach(e => e.classList.remove('show'));
+      $$('input,select,textarea', sec).forEach(el=>{
+        if (el.hasAttribute('required')){
+          if (el.type === 'radio'){
+            const group = form.querySelectorAll(`input[name="${el.name}"]`);
+            const oneChecked = Array.from(group).some(r => r.checked);
+            if(!oneChecked){
+              const err = el.closest('.field')?.querySelector('.error');
+              if(err) err.classList.add('show');
+              valid = false;
+            }
+          } else if (!el.value.trim()){
+            const err = el.closest('.field')?.querySelector('.error');
+            if(err) err.classList.add('show');
+            valid = false;
+          } else if (el.type === 'email'){
+            const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim());
+            if(!ok){ const err = el.closest('.field')?.querySelector('.error'); if(err) err.classList.add('show'); valid=false; }
+          }
+        }
+      });
+      return valid;
+    }
+
+    // Navigasi via stepper (klik)
+    steps.forEach(st=>{
+      st.addEventListener('click', ()=>{
+        const target = Number(st.dataset.step);
+        // izinkan lompat maju hanya jika bagian sebelumnya valid
+        for(let i=0;i<target;i++){
+          if(!validateSection(i)){ setStep(i); return; }
+        }
+        setStep(target);
+      });
+    });
+
+    btnPrev.addEventListener('click', ()=> setStep(current-1));
+    btnNext.addEventListener('click', ()=>{
+      if(!validateSection(current)) return;
+      setStep(current+1);
+    });
+
+    // Foto preview
+    foto.addEventListener('change', (e)=>{
+      const file = e.target.files?.[0];
+      if(!file) { preview.innerHTML = 'Pratinjau'; return; }
+      const reader = new FileReader();
+      reader.onload = ev=>{
+        preview.innerHTML = `<img alt="Foto profil" src="${ev.target.result}">`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Simpan Draf (localStorage)
+    const DRAFT_KEY = 'identitas-draft-v1';
+    btnDraft.addEventListener('click', ()=>{
+      const data = Object.fromEntries(new FormData(form).entries());
+      try{
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+        btnDraft.classList.add('pill'); btnDraft.textContent = 'Draf Tersimpan';
+        setTimeout(()=>{ btnDraft.classList.remove('pill'); btnDraft.textContent = 'Simpan Draf'; }, 1500);
+      }catch(e){ alert('Tidak dapat menyimpan draf di peramban ini.'); }
+    });
+
+    // Muat draf bila ada
+    (function loadDraft(){
+      try{
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if(!raw) return;
+        const data = JSON.parse(raw);
+        Object.entries(data).forEach(([k,v])=>{
+          const el = form.elements[k];
+          if(!el) return;
+          if (el instanceof RadioNodeList){
+            const r = form.querySelector(`input[name="${k}"][value="${v}"]`);
+            if(r) r.checked = true;
+          } else {
+            el.value = v;
+          }
+        });
+      }catch(e){}
+    })();
+
+    // Reset
+    btnReset.addEventListener('click', ()=>{
+      if(!confirm('Kosongkan semua isian?')) return;
+      form.reset(); localStorage.removeItem(DRAFT_KEY);
+      preview.innerHTML = 'Pratinjau';
+      setStep(0);
+      $$('.error').forEach(e=>e.classList.remove('show'));
+    });
+
+    // Submit
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      // pastikan semua valid
+      for(let i=0;i<sections.length;i++){
+        if(!validateSection(i)){ setStep(i); return; }
+      }
+      const data = Object.fromEntries(new FormData(form).entries());
+      // Tampilkan ringkasan
+      summary.innerHTML = renderSummary(data);
+      modal.showModal();
+      console.log('Data terkirim (demo):', data);
+    });
+
+    function renderSummary(d){
+      const safe = s => (s ?? '').toString().trim() || '<span class="pill">-</span>';
+      return `
+        <div class="kv">
+          <div><strong>Nama</strong></div><div>${safe(d.nama)}</div>
+          <div><strong>NIM</strong></div><div>${safe(d.nim)}</div>
+          <div><strong>Tanggal Lahir</strong></div><div>${safe(d.ttl)}</div>
+          <div><strong>Jenis Kelamin</strong></div><div>${safe(d.jk)}</div>
+          <div><strong>Alamat</strong></div><div>${safe(d.alamat)}</div>
+          <div><strong>HP</strong></div><div>${safe(d.hp)}</div>
+          <div><strong>Email</strong></div><div>${safe(d.email)}</div>
+
+          <div><strong>Pendidikan</strong></div><div>${safe(d.jenjang)} — ${safe(d.institusi)} (${safe(d.jurusan)})</div>
+          <div><strong>Periode Studi</strong></div><div>${safe(d.tahunMasuk)} – ${safe(d.tahunLulus)}</div>
+          <div><strong>IPK</strong></div><div>${safe(d.ipk)}</div>
+
+          <div><strong>Organisasi</strong></div><div>${safe(d.orgNama)} • ${safe(d.orgJabatan)}</div>
+          <div><strong>Periode Organisasi</strong></div><div>${safe(d.orgMulai)} – ${safe(d.orgSelesai)}</div>
+          <div><strong>Uraian Organisasi</strong></div><div>${safe(d.orgDesc)}</div>
+
+          <div><strong>Tempat Kerja</strong></div><div>${safe(d.kerjaNama)} • ${safe(d.kerjaPosisi)}</div>
+          <div><strong>Periode Kerja</strong></div><div>${safe(d.kerjaMulai)} – ${safe(d.kerjaSelesai)}</div>
+          <div><strong>Uraian Kerja</strong></div><div>${safe(d.kerjaDesc)}</div>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap">
+          <span class="pill">Status: <strong>Valid</strong></span>
+          <span class="pill">Langkah: ${current+1}/4</span>
+        </div>
+      `;
+    }
+
+    // Init
+    setStep(0);
+  </script>
+</body>
+</html>
